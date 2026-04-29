@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+  
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Roles { // Define as responsabilidades
+  id    String @id @default(uuid())
+  name  String @unique
+  createdAt DateTime @default(now())
+  users Users[]
+  userRoles UserRoles[]
+
+  @@map("roles") // Define como será a referência ao objeto 
+}
+
+model Users { // Usuarios do sistema
+  id    Int     @id @default(autoincrement())
+  name  String
+  email String  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  roles Roles @relation(fields: [roleId], references: [id])
+  roleId String
+  contacts Contacts[]
+  userRoles UserRoles[]
+  
+  @@map("users") // Define como será a referência ao objeto 
+}
+
+model Contacts { // Contatos do sistema
+  id Int @id @default(autoincrement())
+  name String
+  email String
+  phone String
+  userId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user Users @relation(fields: [userId], references: [id])
+
+  @@map("contacts") // Define como será a referência ao objeto
+}
+
+model UserRoles { // Tabela de relacionamento entre usuários e suas responsabilidades
+  id String @id @default(uuid())
+  userId Int
+  roleId String
+
+  user Users @relation(fields: [userId], references: [id])
+  role Roles @relation(fields: [roleId], references: [id])
+
+  @@map("user_roles") // Define como será a referência ao objeto
+}
