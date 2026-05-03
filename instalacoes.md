@@ -3,4 +3,4 @@
 2. npm i @prisma/client@6
 3. npm i @prisma/adapter-mariadb@6
 
-4. 
+4. npm i -D jest @types/jest ts-jest
