@@ -27,8 +27,8 @@ model Users { // Usuarios do sistema
   id    Int     @id @default(autoincrement())
   name  String
   email String  @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt @db.Timestamp(6)
   roles Roles @relation(fields: [roleId], references: [id])
   roleId String
   contacts Contacts[]
